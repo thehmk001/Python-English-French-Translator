@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Translator</title>
+  </head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1,
+    h2 {
+      text-align: center;
+    }
+
+    .translation-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      resize: none;
+      margin-bottom: 10px;
+    }
+
+    button {
+      cursor: pointer;
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .translation-result {
+      text-align: center;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <h1>Huzaifa</h1>
+      <h1>Text Translator</h1>
+      <div class="translation-form">
+        <label for="source-text">Enter Text:</label>
+        <textarea
+          id="source-text"
+          rows="4"
+          placeholder="Enter text to translate..."
+        ></textarea>
+        <div style="display:flex">
+          <button onclick="translateToFrench()">Translate to French</button>
+          <button onclick="translateToEnglish()">Translate to English</button>
+        </div>
+      </div>
+      <div class="translation-result">
+        <h2>Translation:</h2>
+        <p id="translated-text"></p>
+      </div>
+    </div>
+    <script>
+      function translateToFrench() {
+        const sourceText = document.getElementById("source-text").value;
+        fetch("http://127.0.0.1:5000/translate/to_french", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: sourceText }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("translated-text").innerText =
+              data.translation;
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+
+      function translateToEnglish() {
+        const sourceText = document.getElementById("source-text").value;
+        fetch("http://127.0.0.1:5000/translate/to_english", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: sourceText }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("translated-text").innerText =
+              data.translation;
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
+</html>
